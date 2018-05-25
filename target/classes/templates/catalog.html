@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Catalog</title>
+    <link rel="stylesheet" th:href="@{/css/leftmenu.css}" href="../../css/leftmenu.css" />
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"/>
+    <div class="menu">
+        <details>
+            <summary>Пункт меню 1</summary>
+            <a href="#">субменю A</a>
+            <a href="#">субменю B</a>
+            <a href="#">субменю C</a>
+        </details>
+        <details>
+            <summary>Пункт меню 2</summary>
+            <a href="#">субменю A</a>
+            <a href="#">субменю B</a>
+        </details>
+        <details>
+            <summary>Пункт меню 3</summary>
+            <a href="#">субменю A</a>
+            <a href="#">субменю B</a>
+            <a href="#">субменю C</a>
+            <a href="#">субменю D</a>
+            <a href="#">субменю E</a>
+        </details>
+        <details>
+            <summary>Пункт меню 4</summary>
+            <a href="#">субменю A</a>
+            <a href="#">субменю B</a>
+            <a href="#">субменю C</a>
+        </details>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

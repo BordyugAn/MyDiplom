@@ -35,4 +35,9 @@ public class MainController {
     public String error403() {
         return "/error/403";
     }
+
+    @GetMapping("/catalog")
+    public String catalog() {
+        return "/catalog";
+    }
 }
