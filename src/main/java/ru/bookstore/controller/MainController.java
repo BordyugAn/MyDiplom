@@ -37,7 +37,11 @@ public class MainController {
     }
 
     @GetMapping("/catalog")
-    public String catalog() {
-        return "/catalog";
-    }
+    public String catalog() { return "/catalog"; }
+
+    @GetMapping("/adminpanel")
+    public String adminpanel() { return "/adminpanel"; }
+
+    @GetMapping("/newbook")
+    public String newbook() { return "/newbook"; }
 }
