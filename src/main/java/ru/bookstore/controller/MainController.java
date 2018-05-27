@@ -1,11 +1,21 @@
 package ru.bookstore.controller;
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import ru.bookstore.domain.Genre;
+import ru.bookstore.repos.GenreRepo;
+
+import java.util.Map;
 
 @Controller
 public class MainController {
+    @Autowired
+    private GenreRepo genreRepo;
+
     @GetMapping(value = {"/", "/index"})
     public String index() {
         return "/index";
@@ -36,5 +46,19 @@ public class MainController {
     public String newbook() { return "/newbook"; }
 
     @GetMapping("/characteristic")
-    public String characteristic() { return "/characteristic";}
+    public String characteristic(Map<String, Object> model) {
+        Iterable<Genre> genres = genreRepo.findAll();
+        model.put("genres", genres);
+
+        return "/characteristic";
+    }
+
+    @PostMapping
+    public String addGenre(@RequestParam String name, Map<String, Object> model){
+        Genre genre = new Genre(name);
+        genreRepo.save(genre);
+        Iterable<Genre> genres = genreRepo.findAll();
+        model.put("genres", genres);
+        return  "/characteristic";
+    }
 }
