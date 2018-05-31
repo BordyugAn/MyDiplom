@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
+    <meta charset="utf-8"/>
     <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
     <div th:replace="fragments/header :: header-css"/>
     <title>characteristic</title>
@@ -22,16 +23,14 @@
                     <div class="card-header">Жанры</div>
                     <div class="card-body">
                         <h4 class="card-title">Управление жанрами</h4>
-                        <form method="post">
-                            <input type="text" name="text" placeholder="Введите жанр" />
-                            <button type="submit">Добавить</button>
+                        <form action="#" th:action="@{/characteristic}" th:object="${genre}" method="post">
+                            <input type="text" th:field="*{name}" />
+                            <button type="submit">Добавить жанр</button>
                         </form>
-                        {{#genres}}
-                        <div>
-                            <b>{{id}}</b>
-                            <span>{{name}}</span>
+                        <div th:each="genre: ${genres}">
+                            <b th:text="${genre.id}"></b>
+                            <span th:text="${genre.name}"></span>
                         </div>
-                        {{/genres}}
                     </div>
                 </div>
             </td>

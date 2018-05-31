@@ -3,16 +3,18 @@ package ru.bookstore.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import ru.bookstore.domain.Genre;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import ru.bookstore.domain.GenreEntity;
+import ru.bookstore.form.Genre;
 import ru.bookstore.repos.GenreRepo;
 
-import java.util.Map;
+import javax.validation.Valid;
 
 @Controller
 public class MainController {
+
     @Autowired
     private GenreRepo genreRepo;
 
@@ -45,20 +47,26 @@ public class MainController {
     @GetMapping("/newbook")
     public String newbook() { return "/newbook"; }
 
-    @GetMapping("/characteristic")
-    public String characteristic(Map<String, Object> model) {
-        Iterable<Genre> genres = genreRepo.findAll();
-        model.put("genres", genres);
+    //@GetMapping("/characteristic")
+    //public String characteristic() {
+    //    return "/characteristic";
+    //}
 
+
+    @RequestMapping(value = "/characteristic", method = RequestMethod.GET)
+    public String showAllGenres(Model model, Genre genre) {
+        model.addAttribute("genres", genreRepo.findAll());
         return "/characteristic";
     }
 
-    @PostMapping
-    public String addGenre(@RequestParam String name, Map<String, Object> model){
-        Genre genre = new Genre(name);
-        genreRepo.save(genre);
-        Iterable<Genre> genres = genreRepo.findAll();
-        model.put("genres", genres);
-        return  "/characteristic";
+    @RequestMapping(value = "/characteristic", method = RequestMethod.POST)
+    public String addNewGenre(@Valid Genre genre, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/characteristic";
+        }
+        genreRepo.save(new GenreEntity(genre.getName()));
+        model.addAttribute("genres", genreRepo.findAll());
+        return "/characteristic";
     }
+
 }

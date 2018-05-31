@@ -4,17 +4,19 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Genres")
-public class Genre {
+public class GenreEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name = "id", updatable = false, nullable = false)
     private Integer id;
 
+    @Column(name = "name", nullable = false)
     private String name;
 
-    public Genre() {
+    public GenreEntity() {
     }
 
-    public Genre(String name) {
+    public GenreEntity(String name) {
         this.name = name;
     }
 
