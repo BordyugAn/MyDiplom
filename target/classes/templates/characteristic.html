@@ -36,10 +36,39 @@
             </td>
             <td style="width: 33%">
                 <div class="card border-primary mb-3">
-                    <div class="card-header">Header</div>
+                    <div class="card-header">Издательства</div>
                     <div class="card-body">
-                        <h4 class="card-title">Primary card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <h4 class="card-title">Управление издательствами</h4>
+                        <form action="#" th:action="@{/characteristic2}" th:object="${publishHouse}" method="post">
+                            <table>
+                                <tr>
+                                    <td><b>Название</b></td>
+                                    <td><input type="text" th:field="*{name}" /></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Страна</b></td>
+                                    <td><input type="text" th:field="*{country}" /></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Город</b></td>
+                                    <td><input type="text" th:field="*{city}" /></td>
+                                </tr>
+                            </table>
+                            <button type="submit">Добавить издательство</button>
+                        </form>
+                        <table style="width: 100%" border="1">
+                            <tr th:each="publish: ${publish}">
+                                <td>
+                                    <span th:text="${publish.name}"></span>
+                                </td>
+                                <td>
+                                    <span th:text="${publish.country}"></span>
+                                </td>
+                                <td>
+                                    <span th:text="${publish.city}"></span>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </td>

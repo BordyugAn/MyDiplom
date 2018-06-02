@@ -7,8 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.bookstore.domain.GenreEntity;
+import ru.bookstore.domain.PublishHouseEntity;
 import ru.bookstore.form.Genre;
+import ru.bookstore.form.PublishHouse;
 import ru.bookstore.repos.GenreRepo;
+import ru.bookstore.repos.PublishHouseRepo;
 
 import javax.validation.Valid;
 
@@ -17,6 +20,9 @@ public class MainController {
 
     @Autowired
     private GenreRepo genreRepo;
+
+    @Autowired
+    private PublishHouseRepo houseRepo;
 
     @GetMapping(value = {"/", "/index"})
     public String index() {
@@ -47,15 +53,11 @@ public class MainController {
     @GetMapping("/newbook")
     public String newbook() { return "/newbook"; }
 
-    //@GetMapping("/characteristic")
-    //public String characteristic() {
-    //    return "/characteristic";
-    //}
-
 
     @RequestMapping(value = "/characteristic", method = RequestMethod.GET)
-    public String showAllGenres(Model model, Genre genre) {
+    public String showAllGenres(Model model, Genre genre, PublishHouse publishHouse) {
         model.addAttribute("genres", genreRepo.findAll());
+        model.addAttribute("publish", houseRepo.findAll());
         return "/characteristic";
     }
 
@@ -66,7 +68,17 @@ public class MainController {
         }
         genreRepo.save(new GenreEntity(genre.getName()));
         model.addAttribute("genres", genreRepo.findAll());
-        return "/characteristic";
+        return "redirect:/characteristic";
+    }
+
+    @RequestMapping(value = "/characteristic2", method = RequestMethod.POST)
+    public String addNewPublish(@Valid PublishHouse publishHouse, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/characteristic";
+        }
+        houseRepo.save(new PublishHouseEntity(publishHouse.getName(), publishHouse.getCountry(), publishHouse.getCity()));
+        model.addAttribute("publish", houseRepo.findAll());
+        return "redirect:/characteristic";
     }
 
 }
