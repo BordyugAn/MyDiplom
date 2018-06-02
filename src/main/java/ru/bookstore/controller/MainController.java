@@ -55,13 +55,13 @@ public class MainController {
 
 
     @RequestMapping(value = "/characteristic", method = RequestMethod.GET)
-    public String showAllGenres(Model model, Genre genre, PublishHouse publishHouse) {
+    public String showAllcharacteristic(Model model, Genre genre, PublishHouse publishHouse) {
         model.addAttribute("genres", genreRepo.findAll());
         model.addAttribute("publish", houseRepo.findAll());
         return "/characteristic";
     }
 
-    @RequestMapping(value = "/characteristic", method = RequestMethod.POST)
+    @RequestMapping(value = "/characteristicGenre", method = RequestMethod.POST)
     public String addNewGenre(@Valid Genre genre, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "/characteristic";
@@ -71,7 +71,7 @@ public class MainController {
         return "redirect:/characteristic";
     }
 
-    @RequestMapping(value = "/characteristic2", method = RequestMethod.POST)
+    @RequestMapping(value = "/characteristicPublish", method = RequestMethod.POST)
     public String addNewPublish(@Valid PublishHouse publishHouse, BindingResult bindingResult, Model model){
         if (bindingResult.hasErrors()) {
             return "/characteristic";
@@ -81,4 +81,13 @@ public class MainController {
         return "redirect:/characteristic";
     }
 
+    @RequestMapping(value = "/characteristicGenreDel", method = RequestMethod.POST)
+    public String deleteGenre(@Valid Genre genre, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/characteristic";
+        }
+        genreRepo.deleteByName(genre.getName());
+        model.addAttribute("genres", genreRepo.findAll());
+        return "redirect:/characteristic";
+    }
 }

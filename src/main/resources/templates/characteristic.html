@@ -12,20 +12,24 @@
     <style>
         table{
             border-collapse: separate;
-            border-spacing: 20px 20px;
+            border-spacing: 10px 10px;
         }
     </style>
 
     <table style="width: 100%"  border="0">
         <tr>
-            <td style="width: 33%" >
+            <td valign="top" style="width: 33%" >
                 <div class="card border-primary mb-3">
                     <div class="card-header">Жанры</div>
                     <div class="card-body">
                         <h4 class="card-title">Управление жанрами</h4>
-                        <form action="#" th:action="@{/characteristic}" th:object="${genre}" method="post">
+                        <form action="#" th:action="@{/characteristicGenre}" th:object="${genre}" method="post">
                             <input type="text" th:field="*{name}" />
                             <button type="submit">Добавить жанр</button>
+                        </form>
+                        <form action="#" th:action="@{/characteristicGenreDel}" th:object="${genre}" method="post">
+                            <input type="text" th:field="*{name}" />
+                            <button type="submit">Удалить жанр</button>
                         </form>
                         <div th:each="genre: ${genres}">
                             <b th:text="${genre.id}"></b>
@@ -34,12 +38,12 @@
                     </div>
                 </div>
             </td>
-            <td style="width: 33%">
+            <td valign="top" style="width: 33%">
                 <div class="card border-primary mb-3">
                     <div class="card-header">Издательства</div>
                     <div class="card-body">
                         <h4 class="card-title">Управление издательствами</h4>
-                        <form action="#" th:action="@{/characteristic2}" th:object="${publishHouse}" method="post">
+                        <form action="#" th:action="@{/characteristicPublish}" th:object="${publishHouse}" method="post">
                             <table>
                                 <tr>
                                     <td><b>Название</b></td>
@@ -56,7 +60,7 @@
                             </table>
                             <button type="submit">Добавить издательство</button>
                         </form>
-                        <table style="width: 100%" border="1">
+                        <table style="width: 100%" border="0">
                             <tr th:each="publish: ${publish}">
                                 <td>
                                     <span th:text="${publish.name}"></span>
@@ -72,7 +76,7 @@
                     </div>
                 </div>
             </td>
-            <td style="width: 33%">
+            <td valign="top" style="width: 33%">
                 <div class="card border-primary mb-3">
                     <div class="card-header">Header</div>
                     <div class="card-body">
