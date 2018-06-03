@@ -27,6 +27,9 @@
                             <input type="text" th:field="*{name}" />
                             <button type="submit">Добавить жанр</button>
                         </form>
+                        <div>
+                            <p></p>
+                        </div>
                         <form action="#" th:action="@{/characteristicGenreDel}" th:object="${genre}" method="post">
                             <input type="text" th:field="*{name}" />
                             <button type="submit">Удалить жанр</button>
@@ -59,6 +62,13 @@
                                 </tr>
                             </table>
                             <button type="submit">Добавить издательство</button>
+                        </form>
+                        <div>
+                            <p></p>
+                        </div>
+                        <form action="#" th:action="@{/characteristicPublishDel}" th:object="${publishHouse}" method="post">
+                            <input type="text" th:field="*{name}" />
+                            <button type="submit">Удалить издательство</button>
                         </form>
                         <table style="width: 100%" border="0">
                             <tr th:each="publish: ${publish}">

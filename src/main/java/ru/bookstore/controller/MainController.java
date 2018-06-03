@@ -67,7 +67,6 @@ public class MainController {
             return "/characteristic";
         }
         genreRepo.save(new GenreEntity(genre.getName()));
-        model.addAttribute("genres", genreRepo.findAll());
         return "redirect:/characteristic";
     }
 
@@ -77,7 +76,6 @@ public class MainController {
             return "/characteristic";
         }
         houseRepo.save(new PublishHouseEntity(publishHouse.getName(), publishHouse.getCountry(), publishHouse.getCity()));
-        model.addAttribute("publish", houseRepo.findAll());
         return "redirect:/characteristic";
     }
 
@@ -87,7 +85,15 @@ public class MainController {
             return "/characteristic";
         }
         genreRepo.deleteByName(genre.getName());
-        model.addAttribute("genres", genreRepo.findAll());
+        return "redirect:/characteristic";
+    }
+
+    @RequestMapping(value = "/characteristicPublishDel", method = RequestMethod.POST)
+    public String deletePublish(@Valid PublishHouse publishHouse, BindingResult bindingResult, Model model) {
+        if (bindingResult.hasErrors()) {
+            return "/characteristic";
+        }
+        houseRepo.deleteByName(publishHouse.getName());
         return "redirect:/characteristic";
     }
 }
