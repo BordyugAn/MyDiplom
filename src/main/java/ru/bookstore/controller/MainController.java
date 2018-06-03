@@ -7,10 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import ru.bookstore.domain.GenreEntity;
+import ru.bookstore.domain.LanguageEntity;
 import ru.bookstore.domain.PublishHouseEntity;
 import ru.bookstore.form.Genre;
+import ru.bookstore.form.Language;
 import ru.bookstore.form.PublishHouse;
 import ru.bookstore.repos.GenreRepo;
+import ru.bookstore.repos.LanguageRepo;
 import ru.bookstore.repos.PublishHouseRepo;
 
 import javax.validation.Valid;
@@ -23,6 +26,9 @@ public class MainController {
 
     @Autowired
     private PublishHouseRepo houseRepo;
+
+    @Autowired
+    private LanguageRepo languageRepo;
 
     @GetMapping(value = {"/", "/index"})
     public String index() {
@@ -55,9 +61,10 @@ public class MainController {
 
 
     @RequestMapping(value = "/characteristic", method = RequestMethod.GET)
-    public String showAllcharacteristic(Model model, Genre genre, PublishHouse publishHouse) {
+    public String showAllcharacteristic(Model model, Genre genre, PublishHouse publishHouse, Language language) {
         model.addAttribute("genres", genreRepo.findAll());
         model.addAttribute("publish", houseRepo.findAll());
+        model.addAttribute("languages", languageRepo.findAll());
         return "/characteristic";
     }
 
@@ -79,6 +86,15 @@ public class MainController {
         return "redirect:/characteristic";
     }
 
+    @RequestMapping(value = "/characteristicLanguage", method = RequestMethod.POST)
+    public String addNewLanguage(@Valid Language language, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/characteristic";
+        }
+        languageRepo.save(new LanguageEntity(language.getName()));
+        return "redirect:/characteristic";
+    }
+
     @RequestMapping(value = "/characteristicGenreDel", method = RequestMethod.POST)
     public String deleteGenre(@Valid Genre genre, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
@@ -94,6 +110,15 @@ public class MainController {
             return "/characteristic";
         }
         houseRepo.deleteByName(publishHouse.getName());
+        return "redirect:/characteristic";
+    }
+
+    @RequestMapping(value = "/characteristicLanguageDel", method = RequestMethod.POST)
+    public String deleteLanguage(@Valid Language language, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/characteristic";
+        }
+        languageRepo.deleteByName(language.getName());
         return "redirect:/characteristic";
     }
 }

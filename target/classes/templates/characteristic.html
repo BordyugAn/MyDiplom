@@ -91,7 +91,21 @@
                     <div class="card-header">Header</div>
                     <div class="card-body">
                         <h4 class="card-title">Primary card title</h4>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                        <form action="#" th:action="@{/characteristicLanguage}" th:object="${language}" method="post">
+                            <input type="text" th:field="*{name}" />
+                            <button type="submit">Добавить язык</button>
+                        </form>
+                        <div>
+                            <p></p>
+                        </div>
+                        <form action="#" th:action="@{/characteristicLanguageDel}" th:object="${language}" method="post">
+                            <input type="text" th:field="*{name}" />
+                            <button type="submit">Удалить язык</button>
+                        </form>
+                        <div th:each="lang: ${languages}">
+                            <b th:text="${lang.id}"></b>
+                            <span th:text="${lang.name}"></span>
+                        </div>
                     </div>
                 </div>
             </td>
