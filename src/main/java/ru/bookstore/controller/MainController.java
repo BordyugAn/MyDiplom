@@ -6,12 +6,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import ru.bookstore.domain.AuthorEntity;
 import ru.bookstore.domain.GenreEntity;
 import ru.bookstore.domain.LanguageEntity;
 import ru.bookstore.domain.PublishHouseEntity;
+import ru.bookstore.form.Author;
 import ru.bookstore.form.Genre;
 import ru.bookstore.form.Language;
 import ru.bookstore.form.PublishHouse;
+import ru.bookstore.repos.AuthorRepo;
 import ru.bookstore.repos.GenreRepo;
 import ru.bookstore.repos.LanguageRepo;
 import ru.bookstore.repos.PublishHouseRepo;
@@ -29,6 +32,9 @@ public class MainController {
 
     @Autowired
     private LanguageRepo languageRepo;
+
+    @Autowired
+    private AuthorRepo authorRepo;
 
     @GetMapping(value = {"/", "/index"})
     public String index() {
@@ -120,5 +126,30 @@ public class MainController {
         }
         languageRepo.deleteByName(language.getName());
         return "redirect:/characteristic";
+    }
+
+    @RequestMapping(value = "/authors", method = RequestMethod.GET)
+    public String showAllAuthors(Model model, Author author)
+    {
+        model.addAttribute("authors", authorRepo.findAllByOrderBySurname());
+        return "/authors";
+    }
+
+    @RequestMapping(value = "/addAuthor", method = RequestMethod.POST)
+    public String addNewAuthor(@Valid Author author, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/authors";
+        }
+        authorRepo.save(new AuthorEntity(author.getName(), author.getSurname()));
+        return "redirect:/authors";
+    }
+
+    @RequestMapping(value = "/DelAuthor", method = RequestMethod.POST)
+    public String deleteLanguage(@Valid Author author, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/authors";
+        }
+        authorRepo.deleteByNameAndSurname(author.getName(), author.getSurname());
+        return "redirect:/authors";
     }
 }

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <div th:replace="fragments/header :: header-css"/>
+    <title>Panel</title>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"/>
+
+    <style>
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+    </style>
+
+    <table>
+        <tr>
+            <td>
+                <form action="#" th:action="@{/addAuthor}" th:object="${author}" method="post">
+                    <table>
+                        <tr>
+                            <td><b>Имя</b></td>
+                            <td><input type="text" th:field="*{name}" /></td>
+                        </tr>
+                        <tr>
+                            <td><b>Фамилия</b></td>
+                            <td><input type="text" th:field="*{surname}" /></td>
+                        </tr>
+                    </table>
+                    <button type="submit">Добавить автора</button>
+                </form>
+            </td>
+
+            <td>
+                <form action="#" th:action="@{/DelAuthor}" th:object="${author}" method="post">
+                    <table>
+                        <tr>
+                            <td><b>Имя</b></td>
+                            <td><input type="text" th:field="*{name}" /></td>
+                        </tr>
+                        <tr>
+                            <td><b>Фамилия</b></td>
+                            <td><input type="text" th:field="*{surname}" /></td>
+                        </tr>
+                    </table>
+                    <button type="submit">Удалить автора</button>
+                </form>
+            </td>
+        </tr>
+    </table>
+
+    <div>
+        <p></p>
+    </div>
+    <table>
+        <tr th:each="author: ${authors}">
+            <td>
+                <span th:text="${author.id}"></span>
+            </td>
+            <td>
+                <span th:text="${author.surname}"></span>
+            </td>
+            <td>
+                <span th:text="${author.name}"></span>
+            </td>
+        </tr>
+    </table>
+
+    <div th:replace="fragments/footer :: footer"/>
+</body>
+</html>
