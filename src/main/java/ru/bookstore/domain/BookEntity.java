@@ -40,17 +40,17 @@ public class BookEntity {
     private byte[] image;
 
     @Lob
-    @Column(name="text", length = 1024)
+    @Column(name="description", length = 2048)
     private String text;
 
-    public BookEntity(String name, double price, int cover, int year, int pages, int publishhouse, int langeage, int quantity, byte[] image, String text) {
+    public BookEntity(String name, double price, int cover, int year, int pages, int publishhouse, int language, int quantity, byte[] image, String text) {
         this.name = name;
         this.price = price;
         this.cover = cover;
         this.year = year;
         this.pages = pages;
         this.publishhouse = publishhouse;
-        this.language = langeage;
+        this.language = language;
         this.quantity = quantity;
         this.image = image;
         this.text = text;

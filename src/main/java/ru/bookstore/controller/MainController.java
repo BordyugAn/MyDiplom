@@ -6,18 +6,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import ru.bookstore.domain.AuthorEntity;
-import ru.bookstore.domain.GenreEntity;
-import ru.bookstore.domain.LanguageEntity;
-import ru.bookstore.domain.PublishHouseEntity;
-import ru.bookstore.form.Author;
-import ru.bookstore.form.Genre;
-import ru.bookstore.form.Language;
-import ru.bookstore.form.PublishHouse;
-import ru.bookstore.repos.AuthorRepo;
-import ru.bookstore.repos.GenreRepo;
-import ru.bookstore.repos.LanguageRepo;
-import ru.bookstore.repos.PublishHouseRepo;
+import ru.bookstore.domain.*;
+import ru.bookstore.form.*;
+import ru.bookstore.repos.*;
 
 import javax.validation.Valid;
 
@@ -35,6 +26,12 @@ public class MainController {
 
     @Autowired
     private AuthorRepo authorRepo;
+
+    @Autowired
+    private BookRepo bookRepo;
+
+    @Autowired
+    private CoverRepo coverRepo;
 
     @GetMapping(value = {"/", "/index"})
     public String index() {
@@ -56,14 +53,8 @@ public class MainController {
         return "/error/403";
     }
 
-    @GetMapping("/catalog")
-    public String catalog() { return "/catalog"; }
-
     @GetMapping("/adminpanel")
     public String adminpanel() { return "/adminpanel"; }
-
-    @GetMapping("/newbook")
-    public String newbook() { return "/newbook"; }
 
 
     @RequestMapping(value = "/characteristic", method = RequestMethod.GET)
@@ -151,5 +142,31 @@ public class MainController {
         }
         authorRepo.deleteByNameAndSurname(author.getName(), author.getSurname());
         return "redirect:/authors";
+    }
+
+    @RequestMapping(value = "/newbook", method = RequestMethod.GET)
+    public String addBookForm(Model model, Book book, Cover cover, Language language, PublishHouse publishHouse)
+    {
+        model.addAttribute("covers", coverRepo.findAll());
+        model.addAttribute("languages", languageRepo.findAll());
+        model.addAttribute("publishhouses", houseRepo.findAll());
+        //model.addAttribute("books", bookRepo.findAll());
+        return "/newbook";
+    }
+
+    @RequestMapping(value = "/addBook", method = RequestMethod.POST)
+    public String addNewBook(@Valid Book book, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/newbook";
+        }
+        bookRepo.save(new BookEntity(book.getName(), book.getPrice(), book.getCover(), book.getYear(), book.getPages(), book.getPublishhouse(), book.getLanguage(), book.getQuantity(), book.getImage(), book.getText()));
+        return "redirect:/newbook";
+    }
+
+    @RequestMapping(value = "/catalog", method = RequestMethod.GET)
+    public String showCatalog(Model model, Book book)
+    {
+        model.addAttribute("books", bookRepo.findAll());
+        return "/catalog";
     }
 }

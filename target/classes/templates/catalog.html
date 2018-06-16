@@ -24,7 +24,30 @@
                 </ul>
             </td>
             <td align="center">
-                <h1>Здесь будет каталог</h1>
+                <table>
+                    <tr th:each="book: ${books}">
+                        <td>
+                            <!--<img th:src="${book.image}"/>-->
+                            <img th:src="@{${book.image}}" class="thumbnail"/>
+                        </td>
+                        <td>
+                            <table>
+                                <tr>
+                                    <td><b>Название</b></td>
+                                    <td><span th:text="${book.name}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Цена</b></td>
+                                    <td><span th:text="${book.price}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Год издания</b></td>
+                                    <td><span th:text="${book.year}"></span></td>
+                                </tr>
+                            </table>
+                        </td>
+                    </tr>
+                </table>
             </td>
         </tr>
     </table>

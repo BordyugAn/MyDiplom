@@ -8,6 +8,146 @@
 <body>
     <div th:replace="fragments/header :: header"/>
 
+    <style>
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+        td {
+            vertical-align: top;
+        }
+    </style>
+
+    <form action="#" th:action="@{/addBook}" th:object="${book}" method="post">
+        <table style="width: 100%">
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Название книги</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{name}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Цена</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{price}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Число страниц</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{pages}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Год издания</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{year}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Число экземпляров</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{quantity}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" align="right">
+                    <label class="col-form-label" >Изображение</label>
+                </td>
+                <td align="left" >
+                    <input type="file" class="form-control-file" th:field="*{image}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" align="right">
+                    <label class="col-form-label" >Обложка</label>
+                </td>
+                <td align="left" >
+                    <div class="form-group" th:each="cover :${covers}">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="CoversCheck" th:value="${cover.id}" th:field="*{cover}" class="custom-control-input"/>
+                            <label class="custom-control-label" th:text="${cover.name}">
+                            </label>
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" align="right">
+                    <label class="col-form-label" >Язык</label>
+                </td>
+                <td align="left" >
+                    <div class="form-group" th:each="language :${languages}">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="LanguagesCheck" th:value="${language.id}" th:field="*{language}" class="custom-control-input"/>
+                            <label class="custom-control-label" th:text="${language.name}"></label>
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" align="right">
+                    <label class="col-form-label" >Издательство</label>
+                </td>
+                <td align="left" >
+                    <div class="form-group" th:each="publish :${publishhouses}">
+                        <div class="custom-control custom-radio">
+                            <input type="radio" name="LanguagesCheck" th:value="${publish.id}" th:field="*{publishhouse}" class="custom-control-input"/>
+                            <label class="custom-control-label" th:text="${publish.name}"></label>
+                        </div>
+                    </div>
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td style="width: 15%" align="right">
+                    <label class="col-form-label" >Описание</label>
+                </td>
+                <td align="left" >
+                    <div class="form-group">
+                        <textarea class="form-control" id="exampleTextarea" rows="3" th:field="*{text}"></textarea>
+                    </div>
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Добавить книгу</button>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+        <!--<button type="submit">Добавить книгу</button>-->
+    </form>
 
     <div th:replace="fragments/footer :: footer"/>
 </body>
