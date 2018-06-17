@@ -15,6 +15,13 @@
         }
     </style>
 
+    <div align="center">
+        <form action="#" th:action="@{/findbook}" th:object="${book}" method="post">
+            <input type="text" th:field="*{name}" />
+            <button type="submit">Найти книгу</button>
+        </form>
+    </div>
+
     <table style="width: 100%"  border="0">
         <tr>
             <td valign="top" style="width: 50%">
@@ -25,10 +32,6 @@
                         <table style="width: 100%">
                             <tr>
                                 <td>
-                                    <form action="#" th:action="@{/findbook}" th:object="${book}" method="post">
-                                        <input type="text" th:field="*{name}" />
-                                        <button type="submit">Найти книгу</button>
-                                    </form>
                                     <div th:if="${books}!=null">
                                         <form action="#" th:action="@{/addbookauthor}" th:object="${booksAuthors}" method="post">
                                             <table style="width: 100%">
@@ -66,7 +69,37 @@
                     <div class="card-header">Жанры</div>
                     <div class="card-body">
                         <h4 class="card-title">Назначить жанры</h4>
-
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <div th:if="${books}!=null">
+                                        <form action="#" th:action="@{/addbookgenre}" th:object="${booksGenres}" method="post">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group" th:each="booklist :${books}">
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" name="LanguagesCheck" th:value="${booklist.id}" th:field="*{book}" class="custom-control-input"/>
+                                                                <label class="custom-control-label" th:text="${booklist.name}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group" th:each="genre :${genres}">
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" name="LanguagesCheck" th:value="${genre.id}" th:field="*{genre}" class="custom-control-input"/>
+                                                                <label class="custom-control-label" th:text="${genre.name}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block">Назначить</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
                     </div>
                 </div>
             </td>

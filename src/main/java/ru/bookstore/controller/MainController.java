@@ -36,6 +36,9 @@ public class MainController {
     @Autowired
     private BooksAuthorsRepo booksAuthorsRepo;
 
+    @Autowired
+    private BooksGenresRepo booksGenresRepo;
+
     @GetMapping(value = {"/", "/index"})
     public String index() {
         return "/index";
@@ -177,7 +180,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/authandgen", method = RequestMethod.GET)
-    public String authAndGen(Model model, Book book, BooksAuthors booksAuthors){
+    public String authAndGen(Model model, Book book, BooksAuthors booksAuthors, BooksGenres booksGenres){
         model.addAttribute("authors", authorRepo.findAllByOrderBySurname());
         model.addAttribute("genres", genreRepo.findAllByOrderByName());
         model.addAttribute("books", null);
@@ -194,7 +197,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/findbook", method = RequestMethod.POST)
-    public String findBook(@Valid Book book, BindingResult bindingResult, Model model, BooksAuthors booksAuthors){
+    public String findBook(@Valid Book book, BindingResult bindingResult, Model model, BooksAuthors booksAuthors, BooksGenres booksGenres){
         if (bindingResult.hasErrors()) {
             return "/authandgen";
         }
@@ -202,5 +205,14 @@ public class MainController {
         model.addAttribute("genres", genreRepo.findAllByOrderByName());
         model.addAttribute("books", bookRepo.findByName(book.getName()));
         return "/authandgen";
+    }
+
+    @RequestMapping(value = "/addbookgenre", method = RequestMethod.POST)
+    public String addBooksGenres(@Valid BooksGenres booksGenres, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/authandgen";
+        }
+        booksGenresRepo.save(new BooksGenresEntity(booksGenres.getBook(), booksGenres.getGenre()));
+        return "redirect:/authandgen";
     }
 }
