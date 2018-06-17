@@ -164,7 +164,7 @@ public class MainController {
     }
 
     @RequestMapping(value = "/catalog", method = RequestMethod.GET)
-    public String showCatalog(Model model, Book book)
+    public String showCatalog(Model model, Book book, LanguageRepo languageRepo)
     {
         model.addAttribute("books", bookRepo.findAll());
         return "/catalog";

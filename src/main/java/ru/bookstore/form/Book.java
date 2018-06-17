@@ -10,10 +10,10 @@ public class Book {
     private int publishhouse;
     private int language;
     private int quantity;
-    private byte[] image;
+    private String image;
     private String text;
 
-    public Book(String name, double price, int cover, int year, int pages, int publishhouse, int language, int quantity, byte[] image, String text) {
+    public Book(String name, double price, int cover, int year, int pages, int publishhouse, int language, int quantity, String image, String text) {
         this.name = name;
         this.price = price;
         this.cover = cover;
@@ -93,11 +93,11 @@ public class Book {
         this.quantity = quantity;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 

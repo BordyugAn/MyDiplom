@@ -2,6 +2,7 @@ package ru.bookstore.domain;
 
 
 import javax.persistence.*;
+import java.util.Base64;
 
 @Entity
 @Table(name = "Books")
@@ -35,15 +36,13 @@ public class BookEntity {
     @Column(name = "quantity", nullable = false)
     private int quantity;
 
-    @Lob
     @Column(name = "image", nullable = false)
-    private byte[] image;
+    private String image;
 
-    @Lob
-    @Column(name="description", length = 2048)
+    @Column(name="description")
     private String text;
 
-    public BookEntity(String name, double price, int cover, int year, int pages, int publishhouse, int language, int quantity, byte[] image, String text) {
+    public BookEntity(String name, double price, int cover, int year, int pages, int publishhouse, int language, int quantity, String image, String text) {
         this.name = name;
         this.price = price;
         this.cover = cover;
@@ -131,11 +130,11 @@ public class BookEntity {
         this.quantity = quantity;
     }
 
-    public byte[] getImage() {
+    public String getImage() {
         return image;
     }
 
-    public void setImage(byte[] image) {
+    public void setImage(String image) {
         this.image = image;
     }
 
@@ -146,4 +145,5 @@ public class BookEntity {
     public void setText(String text) {
         this.text = text;
     }
+
 }

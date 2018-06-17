@@ -74,8 +74,8 @@
                 <td style="width: 15%" align="right">
                     <label class="col-form-label" >Изображение</label>
                 </td>
-                <td align="left" >
-                    <input type="file" class="form-control-file" th:field="*{image}" />
+                <td align="left">
+                    <input type="text" class="form-control" th:field="*{image}" />
                 </td>
                 <td style="width: 15%">
                 </td>
@@ -146,7 +146,6 @@
                 <td></td>
             </tr>
         </table>
-        <!--<button type="submit">Добавить книгу</button>-->
     </form>
 
     <div th:replace="fragments/footer :: footer"/>
