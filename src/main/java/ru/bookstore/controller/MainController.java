@@ -169,6 +169,8 @@ public class MainController {
         model.addAttribute("books", bookRepo.findAll());
         model.addAttribute("genres", genreRepo.findAllByOrderByName());
         model.addAttribute("publish", houseRepo.findAllByOrderByName());
+        model.addAttribute("languages", languageRepo.findAll());
+        model.addAttribute("cover", coverRepo.findAll());
         return "/catalog";
     }
 }

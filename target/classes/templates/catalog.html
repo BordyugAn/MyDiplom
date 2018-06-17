@@ -53,13 +53,26 @@
                                     <td><b>Год издания</b></td>
                                     <td><span th:text="${book.year}"></span><span> г.</span></td>
                                 </tr>
-                                <tr>
-                                    <td><b>Язык</b></td>
-                                    <td><span th:text="${book.language}"></span></td>
+                                <tr th:each="language: ${languages}">
+                                    <td th:if="${book.language}==${language.id}"><b>Язык</b></td>
+                                    <td th:if="${book.language}==${language.id}"><span th:text="${language.name}"></span></td>
                                 </tr>
                                 <tr>
                                     <td><b>Число страниц</b></td>
                                     <td><span th:text="${book.pages}"></span></td>
+                                </tr>
+                                <tr th:each="publish: ${publish}">
+                                    <td th:if="${book.publishhouse}==${publish.id}"><b>Издательство</b></td>
+                                    <td th:if="${book.publishhouse}==${publish.id}"><span th:text="${publish.name}"></span></td>
+                                </tr>
+                                <tr th:each="cover: ${cover}">
+                                    <td th:if="${book.cover}==${cover.id}"><b>Обложка</b></td>
+                                    <td th:if="${book.cover}==${cover.id}"><span th:text="${cover.name}"></span></td>
+                                </tr>
+                                <tr>
+                                    <td><b>Наличие</b></td>
+                                    <td th:if="${book.quantity}>0"><span th:text="${book.quantity}"></span><span> экземпляров</span></td>
+                                    <td th:if="${book.quantity}==0"><span> Нет в наличии</span></td>
                                 </tr>
                             </table>
                         </td>
