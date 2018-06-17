@@ -164,9 +164,11 @@ public class MainController {
     }
 
     @RequestMapping(value = "/catalog", method = RequestMethod.GET)
-    public String showCatalog(Model model, Book book, LanguageRepo languageRepo)
+    public String showCatalog(Model model, Book book)
     {
         model.addAttribute("books", bookRepo.findAll());
+        model.addAttribute("genres", genreRepo.findAllByOrderByName());
+        model.addAttribute("publish", houseRepo.findAllByOrderByName());
         return "/catalog";
     }
 }

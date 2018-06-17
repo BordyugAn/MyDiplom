@@ -10,5 +10,5 @@ public interface LanguageRepo extends CrudRepository<LanguageEntity, Long> {
 
     @Transactional
     void deleteByName(String name);
-    
+
 }

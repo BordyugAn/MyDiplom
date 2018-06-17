@@ -10,6 +10,8 @@ public interface GenreRepo extends CrudRepository<GenreEntity, Long> {
 
     List<GenreEntity> findByName(String name);
 
+    List<GenreEntity> findAllByOrderByName();
+
     @Transactional
     void deleteByName(String name);
 }

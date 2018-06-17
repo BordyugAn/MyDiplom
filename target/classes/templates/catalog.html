@@ -25,18 +25,13 @@
         <tr>
             <td style="width: 20%">
                 <ul class="nav">
-                    <li class="nav-header">Главные ссылки</li>
-                    <li class="active"><a href="#">Главная</a></li>
-                    <li><a href="#">Обратная связь</a></li>
-                    <li><a href="#">Каталог</a></li>
-                    <li class="nav-header">Дополнительные</li>
-                    <li><a href="#">Наши филиалы</a></li>
-                    <li><a href="#">Календарь мероприятий</a></li>
-                    <li class="nav-divider"></li>
-                    <li><a href="#">Вакансии</a></li>
+                    <li class="nav-header">Жанры</li>
+                    <li th:each="genre :${genres}"><a href="#" th:text="${genre.name}"></a></li>
+                    <li class="nav-header">Издательства</li>
+                    <li th:each="publish :${publish}"><a href="#" th:text="${publish.name}"></a></li>
                 </ul>
             </td>
-            <td align="center">
+            <td >
                 <table>
                     <tr th:each="book: ${books}">
                         <td>
