@@ -33,6 +33,9 @@ public class MainController {
     @Autowired
     private CoverRepo coverRepo;
 
+    @Autowired
+    private BooksAuthorsRepo booksAuthorsRepo;
+
     @GetMapping(value = {"/", "/index"})
     public String index() {
         return "/index";
@@ -150,7 +153,6 @@ public class MainController {
         model.addAttribute("covers", coverRepo.findAll());
         model.addAttribute("languages", languageRepo.findAll());
         model.addAttribute("publishhouses", houseRepo.findAll());
-        //model.addAttribute("books", bookRepo.findAll());
         return "/newbook";
     }
 
@@ -172,5 +174,33 @@ public class MainController {
         model.addAttribute("languages", languageRepo.findAll());
         model.addAttribute("cover", coverRepo.findAll());
         return "/catalog";
+    }
+
+    @RequestMapping(value = "/authandgen", method = RequestMethod.GET)
+    public String authAndGen(Model model, Book book, BooksAuthors booksAuthors){
+        model.addAttribute("authors", authorRepo.findAllByOrderBySurname());
+        model.addAttribute("genres", genreRepo.findAllByOrderByName());
+        model.addAttribute("books", null);
+        return "/authandgen";
+    }
+
+    @RequestMapping(value = "/addbookauthor", method = RequestMethod.POST)
+    public String addBooksAuthors(@Valid BooksAuthors booksAuthors, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "/authandgen";
+        }
+        booksAuthorsRepo.save(new BooksAuthorsEntity(booksAuthors.getBook(), booksAuthors.getAuthor()));
+        return "redirect:/authandgen";
+    }
+
+    @RequestMapping(value = "/findbook", method = RequestMethod.POST)
+    public String findBook(@Valid Book book, BindingResult bindingResult, Model model, BooksAuthors booksAuthors){
+        if (bindingResult.hasErrors()) {
+            return "/authandgen";
+        }
+        model.addAttribute("authors", authorRepo.findAllByOrderBySurname());
+        model.addAttribute("genres", genreRepo.findAllByOrderByName());
+        model.addAttribute("books", bookRepo.findByName(book.getName()));
+        return "/authandgen";
     }
 }

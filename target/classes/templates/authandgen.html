@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <div th:replace="fragments/header :: header-css"/>
+    <title>Authors and genres</title>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"/>
+
+    <style>
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+    </style>
+
+    <table style="width: 100%"  border="0">
+        <tr>
+            <td valign="top" style="width: 50%">
+                <div class="card border-primary mb-3">
+                    <div class="card-header" align="center">Авторы</div>
+                    <div class="card-body">
+                        <h4 class="card-title" align="center">Назначить авторов</h4>
+                        <table style="width: 100%">
+                            <tr>
+                                <td>
+                                    <form action="#" th:action="@{/findbook}" th:object="${book}" method="post">
+                                        <input type="text" th:field="*{name}" />
+                                        <button type="submit">Найти книгу</button>
+                                    </form>
+                                    <div th:if="${books}!=null">
+                                        <form action="#" th:action="@{/addbookauthor}" th:object="${booksAuthors}" method="post">
+                                            <table style="width: 100%">
+                                                <tr>
+                                                    <td>
+                                                        <div class="form-group" th:each="booklist :${books}">
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" name="LanguagesCheck" th:value="${booklist.id}" th:field="*{book}" class="custom-control-input"/>
+                                                                <label class="custom-control-label" th:text="${booklist.name}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                    <td>
+                                                        <div class="form-group" th:each="author :${authors}">
+                                                            <div class="custom-control custom-radio">
+                                                                <input type="radio" name="LanguagesCheck" th:value="${author.id}" th:field="*{author}" class="custom-control-input"/>
+                                                                <label class="custom-control-label" th:text="${author.surname}"></label>
+                                                                <label class="custom-control-label" th:text="${author.name}"></label>
+                                                            </div>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                            <button type="submit" class="btn btn-primary btn-lg btn-block">Назначить</button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </td>
+            <td valign="top" style="width: 50%" align="center">
+                <div class="card border-primary mb-3">
+                    <div class="card-header">Жанры</div>
+                    <div class="card-body">
+                        <h4 class="card-title">Назначить жанры</h4>
+
+                    </div>
+                </div>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
