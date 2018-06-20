@@ -39,6 +39,9 @@ public class MainController {
     @Autowired
     private BooksGenresRepo booksGenresRepo;
 
+    @Autowired
+    private BuyerRepo buyerRepo;
+
     @GetMapping(value = {"/", "/index"})
     public String index() {
         return "/index";
@@ -214,5 +217,26 @@ public class MainController {
         }
         booksGenresRepo.save(new BooksGenresEntity(booksGenres.getBook(), booksGenres.getGenre()));
         return "redirect:/authandgen";
+    }
+
+    @RequestMapping(value = "/addBuyer", method = RequestMethod.POST)
+    public String addBuyer(@Valid Buyer buyer, BindingResult bindingResult, Model model){
+        if (bindingResult.hasErrors()) {
+            return "redirect:/reg";
+        }
+
+//        if(buyerRepo.findByEmail(buyer.getEmail())!=null){
+//            model.addAttribute("message", "Пользователь с таким почтовым адресов уже сущетсвует");
+//            return "redirect:/reg";
+//        }
+        buyer.setRole("ROLE_USER");
+        buyer.setEnabled(true);
+        buyerRepo.save(new BuyerEntity(buyer.getName(), buyer.getSurname(), buyer.getPhone(), buyer.getEmail(), buyer.getPassword(), buyer.isEnabled(), buyer.getRole()));
+        return "redirect:/catalog";
+    }
+
+    @RequestMapping(value = "/reg", method = RequestMethod.GET)
+    public String reg(Buyer buyer) {
+        return "/reg";
     }
 }

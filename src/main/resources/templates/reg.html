@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <div th:replace="fragments/header :: header-css"/>
+    <title>Регистрация</title>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"/>
+
+    <style>
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+        td {
+            vertical-align: top;
+        }
+    </style>
+
+    <form action="/addBuyer" th:action="@{/addBuyer}" th:object="${buyer}" method="post">
+        <table style="width: 100%">
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Имя</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{name}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Фамилия</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" th:field="*{surname}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Почта</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" placeholder="example@email" th:field="*{email}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Телефон</label>
+                </td>
+                <td >
+                    <input type="text" class="form-control" placeholder="8-000-000-00-00" th:field="*{phone}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr align="right">
+                <td style="width: 15%">
+                    <label class="col-form-label" >Пароль</label>
+                </td>
+                <td >
+                    <input type="password" class="form-control" placeholder="Пароль" th:field="*{password}" />
+                </td>
+                <td style="width: 15%">
+                </td>
+            </tr>
+            <tr>
+                <td></td>
+                <td>
+                    <button type="submit" class="btn btn-primary btn-lg btn-block">Зарегистрироваться</button>
+                </td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+
+
+    <div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

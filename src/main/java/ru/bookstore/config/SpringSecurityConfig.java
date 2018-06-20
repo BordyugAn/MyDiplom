@@ -16,7 +16,6 @@ import javax.sql.DataSource;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    private final String ADMIN = "ADMIN";
 
     @Autowired
     @Qualifier("dataSource")
@@ -34,8 +33,8 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/", "/index", "/catalog").permitAll()
-                .antMatchers( "/adminpanel", "/newbook", "/characteristic", "/authors", "/authandgen").hasAnyRole(ADMIN)
+                .antMatchers("/", "/index", "/catalog" , "/reg", "/addBuyer").permitAll()
+                .antMatchers( "/adminpanel", "/newbook", "/characteristic", "/authors", "/authandgen").hasAnyRole("ADMIN")
                 .antMatchers("/user/**").hasAnyRole("USER")
                 .anyRequest().authenticated()
                 .and()

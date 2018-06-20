@@ -1,11 +1,10 @@
 package ru.bookstore.domain;
 
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Buyers")
-public class BuyerEntity {
+public class BuyerEntity{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", updatable = false, nullable = false)
@@ -26,20 +25,20 @@ public class BuyerEntity {
     @Column(name = "password", nullable = false)
     private String password;
 
-    @Column(name = "role", nullable = false)
-    private String role;
-
     @Column(name = "enabled")
     private boolean enabled;
 
-    public BuyerEntity(String name, String surname, String phone, String email, String password, String role, boolean enabled) {
+    @Column(name = "role")
+    private String role;
+
+    public BuyerEntity(String name, String surname, String phone, String email, String password, boolean enabled, String role) {
         this.name = name;
         this.surname = surname;
         this.phone = phone;
         this.email = email;
         this.password = password;
-        this.role = role;
         this.enabled = enabled;
+        this.role = role;
     }
 
     public BuyerEntity() {
@@ -93,19 +92,19 @@ public class BuyerEntity {
         this.password = password;
     }
 
-    public String getRole() {
-        return role;
-    }
-
-    public void setRole(String role) {
-        this.role = role;
-    }
-
     public boolean isEnabled() {
         return enabled;
     }
 
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
     }
 }
