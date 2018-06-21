@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Корзина</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"/>
+
+    <style>
+        .fig {
+            text-align: center;
+        }
+        .mytable{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+        td{
+            vertical-align: top;
+        }
+    </style>
+
+    <table th:each="bol :${booksOrdersList}" class="mytable">
+        <div th:each="book :${books}">
+            <div th:if="${bol.book}==${book.id}">
+                <tr>
+                    <td><b>Название</b></td>
+                    <td><span th:text="${book.name}"></span></td>
+                </tr>
+                <tr>
+                    <td><b>Цена</b></td>
+                    <td><span th:text="${book.price}"></span></td>
+                </tr>
+                <tr>
+                    <td><b>Количество</b></td>
+                    <td><span th:text="${bol.quantity}"></span></td>
+                </tr>
+                <tr>
+                    <td>
+                        <form action="#" th:action="@{/deleteFromBin}" th:object="${booksOrders}" method="post">
+                            <input th:type="radio" th:value="${bol.book}" th:field="*{book}"/>
+                            <button type="submit" class="btn btn-primary">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+            </div>
+        </div>
+    </table>
+
+    <div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

@@ -32,8 +32,8 @@
                 </ul>
             </td>
             <td >
-                <table>
-                    <tr th:each="book: ${books}">
+                <table th:each="book: ${books}" class="mytable">
+                    <tr >
                         <td>
                             <div class="fig" style=" width: 200px; height: 300px;">
                                 <img th:src="@{${book.image}}" style="max-width: 200px; max-height: 300px;"/>
@@ -75,6 +75,44 @@
                                     <td th:if="${book.quantity}==0"><span>Нет в наличии</span></td>
                                 </tr>
                             </table>
+                        </td>
+                        <td style="width: 55%">
+                            <table class="mytable">
+                                <tr>
+                                    <td><b>Авторы</b></td>
+                                    <div th:each="bookauthor: ${bookauthor}">
+                                        <div th:if="${book.id}==${bookauthor.book}">
+                                            <div th:each="author: ${authors}">
+                                                <td th:if="${author.id}==${bookauthor.author}"><span th:text="${author.surname}"></span></td>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <td><b>Жанры</b></td>
+                                    <div th:each="bookgenre: ${bookgenre}">
+                                        <div th:if="${book.id}==${bookgenre.book}">
+                                            <div th:each="genre: ${genres}">
+                                                <td th:if="${genre.id}==${bookgenre.genre}"><span th:text="${genre.name}"></span></td>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tr>
+                                <tr>
+                                    <td><b>Описание</b></td>
+                                </tr>
+                            </table>
+                            <p th:text="${book.text}"></p>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>
+                            <form action="#" th:action="@{/addToBin}" th:object="${booksOrders}" method="post">
+                                <input th:type="number" th:min="1" th:max="${book.quantity}" th:step="1" th:field="*{quantity}"/>
+                                <input th:type="radio" th:value="${book.id}" th:field="*{book}"/>
+                                <button type="submit" class="btn btn-primary btn-lg btn-block">Добавить в корзину</button>
+                            </form>
                         </td>
                     </tr>
                 </table>

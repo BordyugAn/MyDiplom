@@ -11,6 +11,10 @@ import ru.bookstore.form.*;
 import ru.bookstore.repos.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Controller
 public class MainController {
@@ -41,6 +45,8 @@ public class MainController {
 
     @Autowired
     private BuyerRepo buyerRepo;
+
+    private Map<Integer,BooksOrders> booksOrdersList = new HashMap<>();
 
     @GetMapping(value = {"/", "/index"})
     public String index() {
@@ -172,13 +178,16 @@ public class MainController {
     }
 
     @RequestMapping(value = "/catalog", method = RequestMethod.GET)
-    public String showCatalog(Model model, Book book)
+    public String showCatalog(Model model, Book book, BooksOrders booksOrders)
     {
         model.addAttribute("books", bookRepo.findAll());
         model.addAttribute("genres", genreRepo.findAllByOrderByName());
         model.addAttribute("publish", houseRepo.findAllByOrderByName());
         model.addAttribute("languages", languageRepo.findAll());
         model.addAttribute("cover", coverRepo.findAll());
+        model.addAttribute("bookauthor", booksAuthorsRepo.findAll());
+        model.addAttribute("authors", authorRepo.findAll());
+        model.addAttribute("bookgenre", booksGenresRepo.findAll());
         return "/catalog";
     }
 
@@ -238,5 +247,27 @@ public class MainController {
     @RequestMapping(value = "/reg", method = RequestMethod.GET)
     public String reg(Buyer buyer) {
         return "/reg";
+    }
+
+    @RequestMapping(value = "/addToBin", method = RequestMethod.POST)
+    public String addToBin(@Valid BooksOrders booksOrders, BindingResult bindingResult, Model model)
+    {
+        booksOrdersList.put(booksOrders.getBook(), booksOrders);
+        return "redirect:/catalog";
+    }
+
+    @RequestMapping(value = "/bin", method = RequestMethod.GET)
+    public String bin(Model model, BooksOrders booksOrders) {
+        model.addAttribute("booksOrdersList", booksOrdersList.values());
+        model.addAttribute("books", bookRepo.findAll());
+        return "/bin";
+    }
+
+    @RequestMapping(value = "/deleteFromBin", method = RequestMethod.POST)
+    public String deleteFromBin(@Valid BooksOrders booksOrders, BindingResult bindingResult, Model model)
+    {
+
+        booksOrdersList.remove(booksOrders.getBook());
+        return "redirect:/catalog";
     }
 }
