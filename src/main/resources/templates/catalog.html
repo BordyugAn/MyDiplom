@@ -32,6 +32,16 @@
                 </ul>
             </td>
             <td >
+                <div>
+                    <form action="#" th:action="@{/findbookcatalog}" th:object="${book}" method="post">
+                        <table class="mytable" style="width: 100%">
+                            <tr>
+                                <td style="width: 80%"><input class="form-control form-control-lg" type="text" th:field="*{name}" /></td>
+                                <td><button class="btn btn-primary" type="submit">Найти книгу</button></td>
+                            </tr>
+                        </table>
+                    </form>
+                </div>
                 <table th:each="book: ${books}" class="mytable">
                     <tr >
                         <td>

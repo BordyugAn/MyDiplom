@@ -69,11 +69,6 @@ public class MainController {
         return "/index";
     }
 
-    @GetMapping("/user")
-    public String user() {
-        return "/user";
-    }
-
     @GetMapping("/login")
     public String login() {
         return "/login";
@@ -349,5 +344,33 @@ public class MainController {
         orderEntity.setAddress(addId);
         orderRepo.save(orderEntity);
         return "redirect:/catalog";
+    }
+
+    @RequestMapping(value = "/user", method = RequestMethod.GET)
+    public String user(Model model, Buyer buyer) {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        BuyerEntity buyerEntity = buyerRepo.findByEmail(auth.getName());
+        model.addAttribute("orders", orderRepo.findAllByBuyer(buyerEntity.getId()));
+        buyer.setName(buyerEntity.getName());
+        buyer.setSurname(buyerEntity.getSurname());
+        model.addAttribute("status", statusRepo.findAll());
+        model.addAttribute("delivery", deliveryRepo.findAll());
+        return "/user";
+    }
+
+    @RequestMapping(value = "/findbookcatalog", method = RequestMethod.POST)
+    public String findBookCatalog(@Valid Book book, BindingResult bindingResult, Model model, BooksOrders booksOrders){
+        if (bindingResult.hasErrors()) {
+            return "/catalog";
+        }
+        model.addAttribute("genres", genreRepo.findAllByOrderByName());
+        model.addAttribute("publish", houseRepo.findAllByOrderByName());
+        model.addAttribute("languages", languageRepo.findAll());
+        model.addAttribute("cover", coverRepo.findAll());
+        model.addAttribute("bookauthor", booksAuthorsRepo.findAll());
+        model.addAttribute("authors", authorRepo.findAll());
+        model.addAttribute("bookgenre", booksGenresRepo.findAll());
+        model.addAttribute("books", bookRepo.findByName(book.getName()));
+        return "/catalog";
     }
 }

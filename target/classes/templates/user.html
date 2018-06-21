@@ -1,24 +1,71 @@
-<!DOCTYPE HTML>
-<html xmlns:th="http://www.thymeleaf.org">
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
+    <title>Личный кабинет</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
     <div th:replace="fragments/header :: header-css"/>
 </head>
 <body>
-<div th:replace="fragments/header :: header"/>
+    <div th:replace="fragments/header :: header"/>
+    <style>
+        .text {
+            text-align:  center;
+        }
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+        td {
+            vertical-align: top;
+        }
+    </style>
 
-<div class="container">
-
-    <div class="starter-template">
-        <h1>User page (Spring Security protected)</h1>
-        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
-        <form th:action="@{/logout}" method="post">
-            <input type="submit" value="Sign Out"/>
-        </form>
+    <div class="text">
+        <div th:object="${buyer}">
+            <span><b th:text="*{name}"></b> <b th:text="*{surname}"></b></span>
+        </div>
     </div>
-
-</div>
-<!-- /.container -->
-<div th:replace="fragments/footer :: footer"/>
-
+    <div th:each="order: ${orders}">
+        <table style="width: 100%">
+            <tr>
+                <td style="width: 40%"></td>
+                <td></td>
+                <td></td>
+                <td style="width: 30%"></td>
+            </tr>
+            <!--<div th:each="order: ${orders}">-->
+                <tr>
+                    <td></td>
+                    <td><b>Номер заказа</b></td>
+                    <td><span th:text="${order.id}"></span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><b>Дата</b></td>
+                    <td><span th:text="${order.date}"></span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><b>Сумма</b></td>
+                    <td><span th:text="${order.sum}"></span><span> .руб</span></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><b>Статус</b></td>
+                    <div th:each="status: ${status}">
+                        <td th:if="${status.id}==${order.status}"><span th:text="${status.name}"></span></td>
+                    </div>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td><b>Способ доставки</b></td>
+                    <div th:each="delivery: ${delivery}">
+                        <td th:if="${delivery.id}==${order.delivery}"><span th:text="${delivery.name}"></span></td>
+                    </div>
+                </tr>
+            <!--</div>-->
+        </table>
+    </div>
+    <div th:replace="fragments/footer :: footer"/>
 </body>
 </html>
