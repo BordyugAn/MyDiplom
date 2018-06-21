@@ -2,6 +2,8 @@ package ru.bookstore.controller;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -9,12 +11,11 @@ import org.springframework.web.bind.annotation.*;
 import ru.bookstore.domain.*;
 import ru.bookstore.form.*;
 import ru.bookstore.repos.*;
+import ru.bookstore.services.Sum;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.sql.Date;
+import java.util.*;
 
 @Controller
 public class MainController {
@@ -45,6 +46,18 @@ public class MainController {
 
     @Autowired
     private BuyerRepo buyerRepo;
+
+    @Autowired
+    private  StatusRepo statusRepo;
+
+    @Autowired
+    private DeliveryRepo deliveryRepo;
+
+    @Autowired
+    private OrderRepo orderRepo;
+
+    @Autowired
+    private BooksOrdersRepo booksOrdersRepo;
 
     private Map<Integer,BooksOrders> booksOrdersList = new HashMap<>();
 
@@ -269,5 +282,46 @@ public class MainController {
 
         booksOrdersList.remove(booksOrders.getBook());
         return "redirect:/catalog";
+    }
+
+    @RequestMapping(value = "/makeorder", method = RequestMethod.GET)
+    public String makeOrder(Model model, BooksOrders booksOrders, Sum sum, Order order, Delivery delivery) {
+        Iterator<BooksOrders> iterator = booksOrdersList.values().iterator();
+        double sumlocal = 0;
+        while (iterator.hasNext()){
+            BooksOrders booksOrderslocal=iterator.next();
+            BookEntity bookEntity = bookRepo.findById(booksOrderslocal.getBook());
+            sumlocal += (bookEntity.getPrice() * booksOrderslocal.getQuantity());
+        }
+        sum.setSum(sumlocal);
+        model.addAttribute("booksOrdersList", booksOrdersList.values());
+        model.addAttribute("books", bookRepo.findAll());
+        model.addAttribute("deliveries", deliveryRepo.findAll());
+        return "/makeorder";
+    }
+
+    @RequestMapping(value = "/addOrder", method = RequestMethod.POST)
+    public String addOrder(@Valid Order order, BindingResult bindingResult, Model model)
+    {
+        Iterator<BooksOrders> iterator = booksOrdersList.values().iterator();
+        double sumlocal = 0;
+        while (iterator.hasNext()){
+            BooksOrders booksOrderslocal=iterator.next();
+            BookEntity bookEntity = bookRepo.findById(booksOrderslocal.getBook());
+            sumlocal += (bookEntity.getPrice() * booksOrderslocal.getQuantity());
+
+        }
+        java.util.Date date = new java.util.Date();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        BuyerEntity buyerEntity = buyerRepo.findByEmail(auth.getName());
+        orderRepo.save(new OrderEntity(new java.sql.Date(date.getYear(), date.getMonth(), date.getDay()), buyerEntity.getId(), 1, order.getDelivery(), sumlocal, null));
+        int num = orderRepo.findFirstByOrderByIdDesc().getId();
+        iterator = booksOrdersList.values().iterator();
+        while (iterator.hasNext()){
+            BooksOrders booksOrderslocal=iterator.next();
+            booksOrdersRepo.save(new BooksOrdersEntity(num, booksOrderslocal.getBook(), booksOrderslocal.getQuantity()));
+        }
+        booksOrdersList.clear();
+        return "/catalog";
     }
 }

@@ -6,5 +6,5 @@ import ru.bookstore.domain.BuyerEntity;
 import java.util.List;
 
 public interface BuyerRepo extends CrudRepository<BuyerEntity, Long> {
-    List<BuyerEntity> findByEmail(String email);
+    BuyerEntity findByEmail(String email);
 }

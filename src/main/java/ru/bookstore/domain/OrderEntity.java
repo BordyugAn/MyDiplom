@@ -1,7 +1,7 @@
 package ru.bookstore.domain;
 
 import javax.persistence.*;
-import java.sql.SQLData;
+import java.sql.Date;
 
 @Entity
 @Table(name = "Orders")
@@ -12,7 +12,7 @@ public class OrderEntity {
     private Integer id;
 
     @Column(name = "date", nullable = false)
-    private SQLData date;
+    private Date date;
 
     @Column(name = "buyer", nullable = false)
     private int buyer;
@@ -27,9 +27,9 @@ public class OrderEntity {
     private double sum;
 
     @Column(name = "address", nullable = true)
-    private int address;
+    private Integer address;
 
-    public OrderEntity(SQLData date, int buyer, int status, int delivery, double sum, int address) {
+    public OrderEntity(Date date, int buyer, int status, int delivery, double sum, Integer address) {
         this.date = date;
         this.buyer = buyer;
         this.status = status;
@@ -49,11 +49,11 @@ public class OrderEntity {
         this.id = id;
     }
 
-    public SQLData getDate() {
+    public Date getDate() {
         return date;
     }
 
-    public void setDate(SQLData date) {
+    public void setDate(Date date) {
         this.date = date;
     }
 
@@ -89,11 +89,11 @@ public class OrderEntity {
         this.sum = sum;
     }
 
-    public int getAddress() {
+    public Integer getAddress() {
         return address;
     }
 
-    public void setAddress(int address) {
+    public void setAddress(Integer address) {
         this.address = address;
     }
 }
