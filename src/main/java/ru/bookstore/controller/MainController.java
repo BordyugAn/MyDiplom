@@ -59,6 +59,9 @@ public class MainController {
     @Autowired
     private BooksOrdersRepo booksOrdersRepo;
 
+    @Autowired
+    private AddressRepo addressRepo;
+
     private Map<Integer,BooksOrders> booksOrdersList = new HashMap<>();
 
     @GetMapping(value = {"/", "/index"})
@@ -193,7 +196,7 @@ public class MainController {
     @RequestMapping(value = "/catalog", method = RequestMethod.GET)
     public String showCatalog(Model model, Book book, BooksOrders booksOrders)
     {
-        model.addAttribute("books", bookRepo.findAll());
+        model.addAttribute("books", bookRepo.findAllByOrderByIdDesc());
         model.addAttribute("genres", genreRepo.findAllByOrderByName());
         model.addAttribute("publish", houseRepo.findAllByOrderByName());
         model.addAttribute("languages", languageRepo.findAll());
@@ -320,8 +323,31 @@ public class MainController {
         while (iterator.hasNext()){
             BooksOrders booksOrderslocal=iterator.next();
             booksOrdersRepo.save(new BooksOrdersEntity(num, booksOrderslocal.getBook(), booksOrderslocal.getQuantity()));
+            BookEntity bookEntity = bookRepo.findById(booksOrderslocal.getBook());
+            int quantity = bookEntity.getQuantity();
+            quantity -= booksOrderslocal.getQuantity();
+            bookEntity.setQuantity(quantity);
+            bookRepo.save(bookEntity);
         }
         booksOrdersList.clear();
-        return "/catalog";
+        if(order.getDelivery()==1)
+            return "redirect:/catalog";
+        return "redirect:/addaddress";
+    }
+
+    @RequestMapping(value = "/addaddress", method = RequestMethod.GET)
+    public String addAddress(Model model, Address address) {
+        return "/addaddress";
+    }
+
+    @RequestMapping(value = "/inputaddress", method = RequestMethod.POST)
+    public String addAddress(@Valid Address address, BindingResult bindingResult, Model model)
+    {
+        OrderEntity orderEntity = orderRepo.findFirstByOrderByIdDesc();
+        addressRepo.save(new AddressEntity(address.getCity(), address.getStreet(), address.getBuild(), address.getRoom()));
+        int addId = addressRepo.findFirstByOrderByIdDesc().getId();
+        orderEntity.setAddress(addId);
+        orderRepo.save(orderEntity);
+        return "redirect:/catalog";
     }
 }

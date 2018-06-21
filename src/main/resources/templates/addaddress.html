@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Выбор способа доставки</title>
+    <link rel="stylesheet" type="text/css" href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+    <div th:replace="fragments/header :: header-css"/>
+</head>
+<body>
+    <div th:replace="fragments/header :: header"/>
+
+    <style>
+        table{
+            border-collapse: separate;
+            border-spacing: 10px 10px;
+        }
+        td {
+            vertical-align: top;
+        }
+    </style>
+
+    <form action="#" th:action="@{/inputaddress}" th:object="${address}" method="post">
+        <table style="width: 100%">
+            <tr align="right">
+                <td style="width: 30%"><b>Город</b></td>
+                <td style="width: 40%"><input type="text" class="form-control" th:field="*{city}" /></td>
+                <td style="width: 30%"></td>
+            </tr>
+            <tr align="right">
+                <td><b>Улица</b></td>
+                <td><input type="text" class="form-control" th:field="*{street}" /></td>
+                <td></td>
+            </tr>
+            <tr align="right">
+                <td><b>Дом</b></td>
+                <td><input type="text" class="form-control" th:field="*{build}" /></td>
+                <td></td>
+            </tr>
+            <tr align="right">
+                <td><b>Квартира</b></td>
+                <td><input type="text" class="form-control" th:field="*{room}" /></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td></td>
+                <td><button type="submit" class="btn btn-primary btn-lg btn-block">Завершить</button></td>
+                <td></td>
+            </tr>
+        </table>
+    </form>
+
+    <div th:replace="fragments/footer :: footer"/>
+</body>
+</html>

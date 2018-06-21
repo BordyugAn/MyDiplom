@@ -9,4 +9,6 @@ import java.util.List;
 public interface BookRepo extends CrudRepository<BookEntity, Long> {
     List<BookEntity> findByName(String name);
     BookEntity findById(int id);
+
+    List<BookEntity> findAllByOrderByIdDesc();
 }
